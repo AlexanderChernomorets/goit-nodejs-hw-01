@@ -12,7 +12,7 @@ function listContacts() {
       return console.log(error);
     }
     const contacts = JSON.parse(data);
-    console.log(contacts);
+    console.table(contacts);
   });
 }
 
@@ -25,13 +25,13 @@ function getContactById(contactId) {
 
     const contact = contacts.find((contact) => {
       if (contact.id === contactId) {
-        console.log(contact);
+        console.table(contact);
         return contact;
       }
     });
 
     if (contact == null) {
-      console.log(`ID "${contactId}" is not found`);
+      console.log(`Contact with ID "${contactId}" not found!`);
     }
   });
 }
@@ -48,20 +48,22 @@ function removeContact(contactId) {
     );
 
     if (removedContact.length === contacts.length) {
-      console.log(
-        `Contact with ID "${contactId}" don't removed! ID "${contactId}" not found!`
-      );
+      console.log(`Contact with ID "${contactId}" not found!`);
       return;
     }
 
-    console.log("Contact deleted successfully! New list of contacts: ");
-    console.log(removedContact);
+    console.log("Contact deleted successfully!");
+    console.table(removedContact);
 
-    fs.writeFile(contactsPath, JSON.stringify(removedContact, null, 2), (error) => {
-      if (error) {
-        return console.log("error :", error);
+    fs.writeFile(
+      contactsPath,
+      JSON.stringify(removedContact, null, 2),
+      (error) => {
+        if (error) {
+          return console.log("error :", error);
+        }
       }
-    });
+    );
   });
 }
 
@@ -81,7 +83,7 @@ function addContact(name, email, phone) {
     contacts.push(newContact);
 
     console.log("Contact added successfully!");
-    console.log(contacts);
+    console.table(contacts);
 
     fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2), (error) => {
       if (error) {
